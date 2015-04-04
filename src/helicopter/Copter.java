@@ -5,6 +5,14 @@ public class Copter extends Sprite {
         super(symbol, row, col);
     }
 
+    public void fly() {
+        row--;
+    }
+
+    public void fall() {
+        row++;
+    }
+
     @Override
     public int getRow() {
         return row;

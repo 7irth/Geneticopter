@@ -16,6 +16,10 @@ public class GUI extends JFrame {
         cols = game.getNumCols();
     }
 
+    public HelicopterGame getGame() {
+        return game;
+    }
+
     public void launchGame() {
         setTitle("Geneticopter");
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -24,6 +28,9 @@ public class GUI extends JFrame {
         Container c = this.getContentPane();
         c.setLayout(new GridLayout(rows, cols));
         tile = new JLabel[rows][cols];
+
+        GUIListener listener = new GUIListener(this);
+        this.addKeyListener(listener);
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
@@ -36,9 +43,10 @@ public class GUI extends JFrame {
 
         pack();
         setVisible(true);
+        setResizable(false);
     }
 
-    public void updateLabels() {
+    public void update() {
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 tile[i][j].setText(game.get(i, j).toString());

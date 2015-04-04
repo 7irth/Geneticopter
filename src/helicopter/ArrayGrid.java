@@ -50,6 +50,10 @@ public class ArrayGrid<T> {
         }
     }
 
+    public void clearCell(int row, int col) {
+        elements[row][col] = (T) new Wall(' ', row, col);
+    }
+
     /**
      * Gets the item at row row and column col in the grid.
      *
