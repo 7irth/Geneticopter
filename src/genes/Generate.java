@@ -1,4 +1,4 @@
-package Genetics;
+package genes;
 
 public class Generate {
     public static void main(String[] args) {

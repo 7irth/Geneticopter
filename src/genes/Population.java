@@ -1,4 +1,4 @@
-package Genetics;
+package genes;
 
 public class Population {
 }
