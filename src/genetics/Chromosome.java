@@ -16,7 +16,6 @@ public class Chromosome {
     private double mutationRate;
 
     private int fitness;
-    private static final int PERFECT_FIT = 999;
 
     public Chromosome(double[] geneInfo, String dna) {
         rando = new Random();
@@ -43,8 +42,8 @@ public class Chromosome {
 
         for (char c : dna.toCharArray()) {
             try {
-                if (c == '0') window.getGame().applyingGas(false);
-                else window.getGame().applyingGas(true);
+                if (c == '0') window.getGame().gas(false);
+                else window.getGame().gas(true);
 
                 Thread.sleep(GUI.DELAY);
                 window.update();
@@ -53,7 +52,6 @@ public class Chromosome {
 
             } catch (HelicopterGame.CollisionException e) {
                 System.out.println("Oh noes!");
-                window.getGame().initializeCave();
                 break;
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
@@ -65,7 +63,8 @@ public class Chromosome {
         String newDNA = "";
 
         for (char c : dna.toCharArray())
-            newDNA += rando.nextDouble() < mutationRate ? (c + 1) % 2 : c;
+            newDNA += rando.nextDouble() < mutationRate ?
+                    (c + 1) % 2 : String.valueOf(c);
 
         dna = newDNA;
         fitness = 0;

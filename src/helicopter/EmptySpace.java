@@ -1,16 +1,8 @@
 package helicopter;
 
-public class Copter extends Sprite {
-    public Copter(int row, int col) {
-        super(GUI.COPTER, row, col);
-    }
-
-    public void fly() {
-        row--;
-    }
-
-    public void fall() {
-        row++;
+public class EmptySpace extends Sprite {
+    public EmptySpace(int row, int col) {
+        super(GUI.EMPTY, row, col);
     }
 
     @Override

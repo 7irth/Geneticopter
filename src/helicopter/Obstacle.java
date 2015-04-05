@@ -1,16 +1,17 @@
 package helicopter;
 
-public class Copter extends Sprite {
-    public Copter(int row, int col) {
-        super(GUI.COPTER, row, col);
+public class Obstacle extends Sprite {
+    public Obstacle(int row, int col) {
+        super(GUI.OBSTACLE, row, col);
     }
 
-    public void fly() {
-        row--;
+    public void moveAlong() {
+        column--;
     }
 
-    public void fall() {
-        row++;
+    public void transport(int newRow, int newCol) {
+        row = newRow;
+        column = newCol;
     }
 
     @Override

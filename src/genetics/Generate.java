@@ -1,12 +1,18 @@
 package genetics;
 
 import helicopter.GUI;
+import helicopter.Play;
 
 public class Generate {
     public static void gen(GUI game) {
+        Population popPop = new Population(Play.POP_SIZE, Play.CROSSOVER_RATE,
+                Play.MUTATION_RATE, Play.CODON_SIZE, Play.GENE_LENGTH, game);
 
-        Population popPop = new Population(10, 0.7, 1, 1, 50, game);
         System.out.println(popPop.getSortedPop());
-        popPop.selectWeighted();
+
+        Chromosome c = popPop.selectWeighted();
+        System.out.println(c);
+        c.mutate();
+        System.out.println(c);
     }
 }

@@ -1,10 +1,13 @@
 package helicopter;
 
+import java.util.ArrayList;
+
 /**
  * A class that represents a 2D grid of objects of type T.
  *
  * @param <T> the type of objects in the array
  */
+@SuppressWarnings("unchecked")
 public class ArrayGrid<T> {
 
     /**
@@ -22,6 +25,18 @@ public class ArrayGrid<T> {
      */
     private T[][] elements;
 
+    protected ArrayList<Coordinates> changed;
+
+    public class Coordinates {
+        public final int row;
+        public final int col;
+
+        public Coordinates(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+
     /**
      * Initializes a grid of type T objects, sized according to the
      * specified numRows and numCols.
@@ -35,6 +50,8 @@ public class ArrayGrid<T> {
 
         // ugly
         elements = (T[][]) new Object[numRows][numCols];
+
+        changed = new ArrayList<>();
     }
 
     /**
@@ -44,14 +61,18 @@ public class ArrayGrid<T> {
      * @param item the item to place at the location
      */
     public void setCell(T item) {
-        if (item instanceof Sprite) {
-            Sprite sprite = (Sprite) item;
-            elements[sprite.getRow()][sprite.getColumn()] = item;
-        }
+        Sprite sprite = (Sprite) item;
+        elements[sprite.getRow()][sprite.getColumn()] = item;
+        changed.add(new Coordinates(sprite.getRow(), sprite.getColumn()));
     }
 
     public void clearCell(int row, int col) {
-        elements[row][col] = (T) new Wall(' ', row, col);
+        elements[row][col] = (T) new EmptySpace(row, col);
+        changed.add(new Coordinates(row, col));
+    }
+
+    public void clearChanged() {
+        changed.clear();
     }
 
     /**

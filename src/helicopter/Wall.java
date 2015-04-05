@@ -8,12 +8,11 @@ public class Wall extends Sprite {
     /**
      * Initializes a wall with the specified symbol and value
      * at the coordinates (row, col).
-     * @param symbol the symbol for the wall
      * @param row the row coordinate of the wall
      * @param col the column coordinate of the wall
      */
-    public Wall(char symbol, int row, int col) {
-        super(symbol, row, col);
+    public Wall(int row, int col) {
+        super(GUI.WALL, row, col);
     }
 
     /**

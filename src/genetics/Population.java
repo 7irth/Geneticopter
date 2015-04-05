@@ -14,7 +14,6 @@ public class Population {
 
     private int size;
     private double crossoverRate;
-    private double mutationRate;
     private double[] geneDimensions;
 
     public Population(int size, double crossoverRate, double mutationRate,
@@ -22,7 +21,6 @@ public class Population {
         this.game = game;
         this.size = size;
         this.crossoverRate = crossoverRate;
-        this.mutationRate = mutationRate;
         geneDimensions = new double[]{codonLength, geneSize, mutationRate};
 
         rando = new Random();
@@ -32,9 +30,15 @@ public class Population {
         createPopulation();
     }
 
-    // default
+    // default, no game
     public Population() {
         this(10, 0.7, 0.001, 1, 100, null);
+    }
+
+    // default, with game
+    public Population(GUI game) {
+        this();
+        this.game = game;
     }
 
     public void createPopulation() {
@@ -55,7 +59,7 @@ public class Population {
     }
 
     public Chromosome selectWeighted() {
-        ArrayList<Integer> fitness = new ArrayList<>();
+        ArrayList<Integer> fitness = new ArrayList<>(sortedPop.keySet().size());
         fitness.addAll(sortedPop.keySet());
         int pick = rando.nextInt(fitness.stream().reduce(Integer::sum).get());
         int current = 0;

@@ -5,7 +5,12 @@ import java.awt.*;
 
 public class GUI extends JFrame {
 
-    public static final int DELAY = 200;
+    // internal game constants
+    public static final int DELAY = 100;
+    public static final char COPTER = '^';
+    public static final char WALL = '|';
+    public static final char EMPTY = ' ';
+    public static final char OBSTACLE = 'o';
 
     public HelicopterGame game;
     private JLabel[][] tile;
@@ -49,11 +54,16 @@ public class GUI extends JFrame {
     }
 
     public void update() {
-        game.moveObstacles();
+        try {
+            game.moveObstacles();
+        } catch (HelicopterGame.CollisionException e) {
+            game.initializeCave();
+        }
 
-        // redraw
-        for (int i = 0; i < rows; i++)
-            for (int j = 0; j < cols; j++)
-                tile[i][j].setText(game.get(i, j).toString());
+        // redraw changed tiles
+        for (ArrayGrid.Coordinates c : game.getCave().changed)
+            tile[c.row][c.col].setText(game.get(c.row, c.col).toString());
+
+        game.getCave().clearChanged();
     }
 }
