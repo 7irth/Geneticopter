@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class GUI extends JFrame {
 
-    public static final int DELAY = 400;
+    public static final int DELAY = 200;
 
     public HelicopterGame game;
     private JLabel[][] tile;
@@ -49,6 +49,9 @@ public class GUI extends JFrame {
     }
 
     public void update() {
+        game.moveObstacles();
+
+        // redraw
         for (int i = 0; i < rows; i++)
             for (int j = 0; j < cols; j++)
                 tile[i][j].setText(game.get(i, j).toString());

@@ -1,4 +1,4 @@
-package genes;
+package genetics;
 
 import helicopter.GUI;
 import helicopter.HelicopterGame;
@@ -7,21 +7,23 @@ import java.util.Random;
 
 public class Chromosome {
 
+    private Random rando;
+
+    private String dna;
     private int codonSize;
     private int numberOfGenes;
     private int chromoLength;
-
-    private static final int PERFECT_FIT = 999;
-    
-    private String dna;
+    private double mutationRate;
 
     private int fitness;
+    private static final int PERFECT_FIT = 999;
 
-    public Chromosome(int[] geneInfo, String dna) {
-        Random rando = new Random();
+    public Chromosome(double[] geneInfo, String dna) {
+        rando = new Random();
 
-        codonSize = geneInfo[0];
-        numberOfGenes = geneInfo[1];
+        codonSize = (int) geneInfo[0];
+        numberOfGenes = (int) geneInfo[1];
+        mutationRate = geneInfo[2];
         chromoLength = codonSize * numberOfGenes;
 
         this.dna = dna;
@@ -32,7 +34,7 @@ public class Chromosome {
         fitness = 0;
     }
 
-    public Chromosome(int[] geneInfo) {
+    public Chromosome(double[] geneInfo) {
         this(geneInfo, "");
     }
 
@@ -57,6 +59,16 @@ public class Chromosome {
                 ie.printStackTrace();
             }
         }
+    }
+
+    public void mutate() {
+        String newDNA = "";
+
+        for (char c : dna.toCharArray())
+            newDNA += rando.nextDouble() < mutationRate ? (c + 1) % 2 : c;
+
+        dna = newDNA;
+        fitness = 0;
     }
 
     public int getCodonSize() {

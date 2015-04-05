@@ -35,6 +35,10 @@ public class HelicopterGame {
         crashed = false;
     }
 
+    public void moveObstacles() {
+
+    }
+
     public ArrayGrid<Sprite> getCave() {
         return cave;
     }
