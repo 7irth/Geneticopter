@@ -28,11 +28,12 @@ public class GUIListener extends KeyAdapter {
     @Override
     public void keyTyped(KeyEvent event) {
         try {
-            this.window.getGame().applyingGas(true);
+            window.getGame().applyingGas(true);
         } catch (HelicopterGame.CollisionException e) {
             System.out.println("Oh noes!");
+            window.getGame().initializeCave();
         }
-        this.window.update();
+        window.update();
     }
 
     @Override

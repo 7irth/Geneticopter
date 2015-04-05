@@ -22,7 +22,7 @@ public class HelicopterGame {
         initializeCave();
     }
 
-    protected void initializeCave() {
+    public void initializeCave() {
         for (int row = 0; row < xSize; row++)
             for (int col = 0; col < ySize; col++)
                 if (row < ceiling || row > floor)

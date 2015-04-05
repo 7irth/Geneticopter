@@ -5,7 +5,9 @@ import java.awt.*;
 
 public class GUI extends JFrame {
 
-    private HelicopterGame game;
+    public static final int DELAY = 400;
+
+    public HelicopterGame game;
     private JLabel[][] tile;
     private int rows;
     private int cols;
