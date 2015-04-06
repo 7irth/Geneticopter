@@ -53,17 +53,21 @@ public class GUI extends JFrame {
         setResizable(false);
     }
 
-    public void update() {
-        try {
-            game.moveObstacles();
-        } catch (HelicopterGame.CollisionException e) {
-            game.initializeCave();
-        }
+    public void GUIUpdate() {
+        update();
 
         // redraw changed tiles
         for (ArrayGrid.Coordinates c : game.getCave().changed)
             tile[c.row][c.col].setText(game.get(c.row, c.col).toString());
 
         game.getCave().clearChanged();
+    }
+
+    public void update() {
+        try {
+            game.moveObstacles();
+        } catch (HelicopterGame.CollisionException e) {
+            game.initializeCave();
+        }
     }
 }

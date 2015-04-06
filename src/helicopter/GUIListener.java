@@ -33,7 +33,7 @@ public class GUIListener extends KeyAdapter {
             System.out.println("Oh noes!");
             window.getGame().initializeCave();
         }
-        window.update();
+        window.GUIUpdate();
     }
 
     @Override

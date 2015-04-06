@@ -2,6 +2,7 @@ package genetics;
 
 import helicopter.GUI;
 import helicopter.HelicopterGame;
+import helicopter.Play;
 
 import java.util.Random;
 
@@ -37,29 +38,33 @@ public class Chromosome {
         this(geneInfo, "");
     }
 
-    public void testFitness(GUI window) {
+    public Chromosome(double[] geneInfo, GUI window) {
+        this(geneInfo, "");
+        testFitness(window);
+    }
+
+    public int testFitness(GUI window) {
         window.getGame().initializeCave();
 
-        for (char c : dna.toCharArray()) {
+        for (char c : dna.toCharArray())
             try {
                 if (c == '0') window.getGame().gas(false);
                 else window.getGame().gas(true);
 
-                Thread.sleep(GUI.DELAY);
-                window.update();
+                if (Play.GUI) {
+                    Thread.sleep(GUI.DELAY);
+                    window.GUIUpdate();
+                } else window.update();
 
                 fitness++;
 
-            } catch (HelicopterGame.CollisionException e) {
-                System.out.println("Oh noes!");
+            } catch (HelicopterGame.CollisionException | InterruptedException e) {
                 break;
-            } catch (InterruptedException ie) {
-                ie.printStackTrace();
             }
-        }
+        return fitness;
     }
 
-    public void mutate() {
+    public Chromosome mutate() {
         String newDNA = "";
 
         for (char c : dna.toCharArray())
@@ -68,6 +73,8 @@ public class Chromosome {
 
         dna = newDNA;
         fitness = 0;
+
+        return this;
     }
 
     public int getCodonSize() {
@@ -82,6 +89,7 @@ public class Chromosome {
         return chromoLength;
     }
 
+    // could give back 0 fitness if it hasn't been tested yet
     public int getFitness() {
         return fitness;
     }
@@ -92,6 +100,10 @@ public class Chromosome {
 
     public char[] getDNA() {
         return dna.toCharArray();
+    }
+
+    public String getStringDNA() {
+        return dna;
     }
 
     @Override

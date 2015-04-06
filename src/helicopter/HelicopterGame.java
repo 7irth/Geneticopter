@@ -8,6 +8,7 @@ public class HelicopterGame {
     private ArrayGrid<Sprite> cave;
     private Copter copter;
     private HashSet<Obstacle> obstacles;
+    private HashSet<Obstacle> initObstacles;
 
     private int xSize;
     private int ySize;
@@ -19,6 +20,7 @@ public class HelicopterGame {
 
     private boolean crashed = false;
     private boolean gasLastTime = false;
+    private boolean created = false;
 
     public HelicopterGame() {
         this.xSize = Play.X_SIZE;
@@ -43,7 +45,7 @@ public class HelicopterGame {
                 else
                     cave.setCell(new EmptySpace(row, col));
 
-        copter = new Copter(xSize / 2, 42);
+        copter = new Copter(xSize / 2, 42);  // copter starting position
         cave.setCell(copter);
         crashed = false;
 
@@ -51,16 +53,23 @@ public class HelicopterGame {
     }
 
     public void initializeObstacles() {
-        obstacles = new HashSet<>();
 
-        for (int i = 0; i < numberOfObstacles; i++) {
-            Obstacle o = new Obstacle(
-                    rando.nextInt(floor - ceiling) + ceiling,
-                    rando.nextInt(ySize));
+        if (!created) {
+            obstacles = new HashSet<>();
 
-            obstacles.add(o);
-            cave.setCell(o);
-        }
+            for (int i = 0; i < numberOfObstacles; i++) {
+                Obstacle o = new Obstacle(
+                        rando.nextInt(floor - ceiling) + ceiling,
+                        rando.nextInt(ySize));
+
+                obstacles.add(o);
+                cave.setCell(o);
+            }
+            initObstacles = new HashSet<>(obstacles);
+            created = true;
+        } else obstacles = initObstacles;
+
+
     }
 
     public void moveObstacles() throws CollisionException {
