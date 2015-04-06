@@ -16,7 +16,7 @@ public class Chromosome {
     private int chromoLength;
     private double mutationRate;
 
-    private int fitness;
+    private int fitness = 0;
 
     public Chromosome(double[] geneInfo, String dna) {
         rando = new Random();
@@ -30,21 +30,27 @@ public class Chromosome {
 
         if (dna.length() == 0) while (this.dna.length() < chromoLength)
             this.dna += rando.nextBoolean() ? "1" : "0";
-
-        fitness = 0;
     }
 
+    // randomly generated dna
     public Chromosome(double[] geneInfo) {
         this(geneInfo, "");
     }
 
+    // randomly generated and tested
     public Chromosome(double[] geneInfo, GUI window) {
         this(geneInfo, "");
         testFitness(window);
     }
 
+    // for testing single chromosomes
+    public Chromosome(String testDNA, GUI window) {
+        rando = new Random();
+        this.dna = testDNA;
+        testFitness(window);
+    }
+
     public int testFitness(GUI window) {
-        window.getGame().initializeCave();
 
         for (char c : dna.toCharArray())
             try {
@@ -59,6 +65,8 @@ public class Chromosome {
                 fitness++;
 
             } catch (HelicopterGame.CollisionException | InterruptedException e) {
+                System.out.println("Collision in Chromo");
+                window.getGame().initializeCave();
                 break;
             }
         return fitness;
@@ -108,6 +116,6 @@ public class Chromosome {
 
     @Override
     public String toString() {
-        return dna;
+        return String.format("%d: %s", fitness, dna);
     }
 }

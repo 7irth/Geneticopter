@@ -5,6 +5,10 @@ public class Obstacle extends Sprite {
         super(GUI.OBSTACLE, row, col);
     }
 
+    public static Obstacle getObsInstance(int row, int col) {
+        return new Obstacle(row, col);
+    }
+
     public void moveAlong() {
         column--;
     }

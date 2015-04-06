@@ -42,6 +42,13 @@ public class Population {
         this.game = game;
     }
 
+    // for testing one
+    public Population(String testDNA, String testObs, GUI game) {
+        this.game = game;
+        game.getGame().readObstacleLocations(testObs);
+        new Chromosome(testDNA, game);
+    }
+
     public void createPopulation() {
         for (int i = 0; i < size; i++) {
             Chromosome chromosome = new Chromosome(geneDimensions);
@@ -109,7 +116,7 @@ public class Population {
     public void nextGeneration() {
         ArrayList<Chromosome> newPop = new ArrayList<>(population.size());
 
-        for (int i = 0; i < population.size(); i++) {
+        for (int i = 0; i < population.size() / 2; i++) {
             Chromosome uno = selectWeighted();
             Chromosome dos = selectWeighted();
 
@@ -148,16 +155,20 @@ public class Population {
         return fitPop;
     }
 
+    public Chromosome getBest() {
+        return fitPop.lastEntry().getValue();
+    }
+
     @Override
     public String toString() {
         String s = "";
         sumPopulationFitness();
 
-        for (Integer i : fitPop.keySet())
-            s += i + "\r\n";
+//        for (Integer i : fitPop.keySet())
+//            s += i + "\r\n";
 
-        s += "\nTotal population fitness: " + populationFitness +
-                "\nAverage fitness: " + populationFitness / fitPop.size();
+        s += String.format("Population fitness %d, average: %d",
+                populationFitness, populationFitness / fitPop.size());
 
         return s;
     }

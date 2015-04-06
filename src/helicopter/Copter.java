@@ -10,7 +10,7 @@ public class Copter extends Sprite {
     }
 
     public void fall() {
-        row++;
+        row += 2;
     }
 
     @Override

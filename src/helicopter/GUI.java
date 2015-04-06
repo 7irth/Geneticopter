@@ -12,7 +12,7 @@ public class GUI extends JFrame {
     public static final char EMPTY = ' ';
     public static final char OBSTACLE = 'o';
 
-    public HelicopterGame game;
+    private HelicopterGame game;
     private JLabel[][] tile;
     private int rows;
     private int cols;
@@ -67,6 +67,7 @@ public class GUI extends JFrame {
         try {
             game.moveObstacles();
         } catch (HelicopterGame.CollisionException e) {
+            System.out.println("Collision with obstacle update");
             game.initializeCave();
         }
     }

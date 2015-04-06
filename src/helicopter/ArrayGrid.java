@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @param <T> the type of objects in the array
  */
 @SuppressWarnings("unchecked")
-public class ArrayGrid<T> {
+public class ArrayGrid<T> implements java.io.Serializable {
 
     /**
      * The number of rows in the array.

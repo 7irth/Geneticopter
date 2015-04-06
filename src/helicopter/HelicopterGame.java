@@ -18,9 +18,9 @@ public class HelicopterGame {
 
     private Random rando;
 
-    private boolean crashed = false;
-    private boolean gasLastTime = false;
-    private boolean created = false;
+    private boolean crashed;
+    private boolean gasLastTime;
+    private boolean created;
 
     public HelicopterGame() {
         this.xSize = Play.X_SIZE;
@@ -36,6 +36,7 @@ public class HelicopterGame {
     }
 
     public void initializeCave() {
+        System.out.println("Init cave");
         cave = new ArrayGrid<>(xSize, ySize);
 
         for (int row = 0; row < xSize; row++)
@@ -46,15 +47,17 @@ public class HelicopterGame {
                     cave.setCell(new EmptySpace(row, col));
 
         copter = new Copter(xSize / 2, 42);  // copter starting position
-        cave.setCell(copter);
+        gasLastTime = false;
         crashed = false;
+        cave.setCell(copter);
 
         initializeObstacles();
     }
 
     public void initializeObstacles() {
-
+        System.out.println("Init obs");
         if (!created) {
+            System.out.println("Making obs");
             obstacles = new HashSet<>();
 
             for (int i = 0; i < numberOfObstacles; i++) {
@@ -64,12 +67,21 @@ public class HelicopterGame {
 
                 obstacles.add(o);
                 cave.setCell(o);
-            }
-            initObstacles = new HashSet<>(obstacles);
-            created = true;
-        } else obstacles = initObstacles;
+            } created = true;
+            initObstacles = deepObstacleCopy(obstacles);
+        } else {
+            System.out.println("Shifting obs back\n");
+            obstacles = deepObstacleCopy(initObstacles);
+        }
+    }
 
+    public HashSet<Obstacle> deepObstacleCopy(HashSet<Obstacle> original) {
+        HashSet<Obstacle> copied = new HashSet<>();
 
+        for (Obstacle o : original)
+            copied.add(Obstacle.getObsInstance(o.getRow(), o.getColumn()));
+
+        return copied;
     }
 
     public void moveObstacles() throws CollisionException {
@@ -83,6 +95,33 @@ public class HelicopterGame {
                 throw new CollisionException();
             else cave.setCell(o);
         }
+    }
+
+    public void readObstacleLocations(String locations) {
+        obstacles = new HashSet<>();
+
+        for (String coords : locations.split("o")) {
+            String[] coord = coords.split(",");
+            Obstacle o = new Obstacle(Integer.parseInt(coord[0]),
+                    Integer.parseInt(coord[1]));
+
+            obstacles.add(o);
+            cave.setCell(o);
+        }
+        initObstacles = deepObstacleCopy(obstacles);
+        created = true;
+
+        // deep copying back and forth
+        initializeCave();
+    }
+
+    public String writeObstacleLocations() {
+        String s = "";
+
+        for (Obstacle o : obstacles)
+            s += String.format("%d,%do", o.getRow(), o.getColumn());
+
+        return s.substring(0, s.lastIndexOf('o'));
     }
 
     public ArrayGrid<Sprite> getCave() {
@@ -136,6 +175,7 @@ public class HelicopterGame {
 
         if (cave.getCell(copter.getRow(), copter.getColumn()) instanceof Wall
                 || cave.getCell(copter.getRow(), copter.getColumn()) instanceof Obstacle) {
+            System.out.println("Hit wall or obstacle");
             throw new CollisionException();
         } else cave.setCell(copter);
     }
