@@ -10,7 +10,7 @@ public class Population {
     private Random rando;
 
     private ArrayList<Chromosome> population;
-    private TreeMap<Integer, Chromosome> fitPop;
+    private TreeMap<Integer, ArrayList<Chromosome>> fitPop;
 
     private int size;
     private double crossoverRate;
@@ -53,14 +53,7 @@ public class Population {
         while (population.size() < size)
             population.add(new Chromosome(geneDimensions));
 
-        if (game != null) testPopulationFitness();
-//        sumPopulationFitness();
-    }
-
-    public void sumPopulationFitness() {
-        ArrayList<Integer> fitness = new ArrayList<>(fitPop.size());
-        fitness.addAll(fitPop.keySet());
-        populationFitness = fitness.stream().reduce(Integer::sum).get();
+        if (game != null) assessPopulationFitness();
     }
 
     public int getPopulationFitness() {
@@ -77,7 +70,8 @@ public class Population {
 
         for (Integer i : fitPop.keySet()) {
             current += i;
-            if (current > pick) return fitPop.get(i);
+            if (current > pick) return fitPop.get(i)
+                    .get(rando.nextInt(fitPop.get(i).size()));
         }
         return selectRandom();
     }
@@ -128,24 +122,30 @@ public class Population {
 
         // bring population back up
         while (newPop.size() < population.size())
-            newPop.add(new Chromosome(geneDimensions, game));
+            newPop.add(new Chromosome(geneDimensions));
 
         population = newPop;
-        testPopulationFitness();
+        assessPopulationFitness();
 
         System.out.println(this);
+//        System.out.println(fitPop);
     }
 
-    public void testPopulationFitness() {
-        TreeMap<Integer, Chromosome> newFitPop = new TreeMap<>();
+    public void assessPopulationFitness() {
+        TreeMap<Integer, ArrayList<Chromosome>> newFitPop = new TreeMap<>();
         populationFitness = 0;
 
         for (Chromosome c : population) {
-            int cFitness = c.testFitness(game);
-            newFitPop.put(cFitness, c);
-            populationFitness += cFitness;
-        }
+            int fitness = c.testFitness(game);
 
+            if (newFitPop.keySet().contains(fitness))
+                newFitPop.get(fitness).add(c);
+            else
+                newFitPop.put(fitness,
+                        new ArrayList<>(Collections.singletonList(c)));
+
+            populationFitness += fitness;
+        }
         fitPop = newFitPop;
     }
 
@@ -153,27 +153,17 @@ public class Population {
         return population;
     }
 
-    public TreeMap<Integer, Chromosome> getFitPop() {
+    public TreeMap<Integer, ArrayList<Chromosome>> getFitPop() {
         return fitPop;
     }
 
     public Chromosome getBest() {
-        return fitPop.lastEntry().getValue();
+        return fitPop.lastEntry().getValue().get(0);
     }
 
     @Override
     public String toString() {
-        String s = "";
-        System.out.println("OLD TOTAL FITNESS: " + populationFitness);
-        sumPopulationFitness();
-        System.out.println("NEW TOTAL FITNESS: " + populationFitness);
-
-//        for (Integer i : fitPop.keySet())
-//            s += i + "\r\n";
-
-        s += String.format("Population fitness %d, average: %d",
-                populationFitness, populationFitness / fitPop.size());
-
-        return s;
+        return String.format("Population fitness %d, average: %d",
+                populationFitness, populationFitness / size);
     }
 }

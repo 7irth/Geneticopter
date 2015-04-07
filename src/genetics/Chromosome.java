@@ -36,17 +36,12 @@ public class Chromosome {
         this(geneInfo, "");
     }
 
-    // randomly generated and tested
-    public Chromosome(double[] geneInfo, GUI window) {
-        this(geneInfo, "");
-        testFitness(window);
-    }
-
     // for testing single chromosomes
     public Chromosome(String testDNA, GUI window) {
         rando = new Random();
         this.dna = testDNA;
-        System.out.println(testFitness(window));
+        testFitness(window);
+        System.out.println(this);
     }
 
     public int testFitness(GUI window) {
@@ -60,7 +55,7 @@ public class Chromosome {
                 fitness++;
 
             } catch (HelicopterGame.CollisionException e) {
-                System.out.println(this);
+//                System.out.println(this);
                 break;
             }
         return fitness;

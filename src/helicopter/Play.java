@@ -11,7 +11,7 @@ public class Play {
     public static final boolean GUI = false;
 
     // population values
-    public static final int POP_SIZE = 10;
+    public static final int POP_SIZE = 100;
     public static final double CROSSOVER_RATE = 0.7;
     public static final double MUTATION_RATE = 0.001;
     public static final int CODON_SIZE = 1;
