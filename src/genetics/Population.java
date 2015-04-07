@@ -1,10 +1,14 @@
 package genetics;
 
 import helicopter.GUI;
+import helicopter.Play;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
+import java.util.TreeMap;
 
-public class Population {
+class Population {
 
     private GUI game;
     private Random rando;
@@ -32,6 +36,7 @@ public class Population {
     }
 
     // default, no game
+    @SuppressWarnings("WeakerAccess")
     public Population() {
         this(10, 0.7, 0.001, 1, 100, null);
     }
@@ -49,7 +54,7 @@ public class Population {
         new Chromosome(testDNA, game);
     }
 
-    public void createPopulation() {
+    private void createPopulation() {
         while (population.size() < size)
             population.add(new Chromosome(geneDimensions));
 
@@ -60,11 +65,11 @@ public class Population {
         return populationFitness;
     }
 
-    public Chromosome selectRandom() {
+    private Chromosome selectRandom() {
         return population.get(rando.nextInt(population.size()));
     }
 
-    public Chromosome selectWeighted() {
+    private Chromosome selectWeighted() {
         int pick = rando.nextInt(populationFitness);
         int current = 0;
 
@@ -76,7 +81,7 @@ public class Population {
         return selectRandom();
     }
 
-    public ChromoPair crossOver(Chromosome C1, Chromosome C2) {
+    private ChromoPair crossOver(Chromosome C1, Chromosome C2) {
         if (rando.nextDouble() < crossoverRate) {
             int start = rando.nextInt(C1.getChromoLength());
 
@@ -131,8 +136,17 @@ public class Population {
 //        System.out.println(fitPop);
     }
 
-    public void assessPopulationFitness() {
-        TreeMap<Integer, ArrayList<Chromosome>> newFitPop = new TreeMap<>();
+    private void assessPopulationFitness() {
+        TreeMap<Integer, ArrayList<Chromosome>> newFitPop =
+                new TreeMap<Integer, ArrayList<Chromosome>>() {
+            @Override
+            public String toString() {
+                String s = "";
+                for (Integer c : this.keySet())
+                    s += c + ": " + this.get(c) + '\n';
+                return s.trim();
+            }};
+
         populationFitness = 0;
 
         for (Chromosome c : population) {
@@ -163,7 +177,10 @@ public class Population {
 
     @Override
     public String toString() {
-        return String.format("Population fitness %d, average: %d",
+
+        //noinspection ConstantConditions
+        return (Play.DEBUG ? '\n' + fitPop.toString() + '\n' : "") +
+                String.format("Population fitness: %d, average: %d",
                 populationFitness, populationFitness / size);
     }
 }

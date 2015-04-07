@@ -4,10 +4,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 /** A listener for the GUI window. */
-public class GUIListener extends KeyAdapter {
+class GUIListener extends KeyAdapter {
   
     /** A GUI for the maze game. */
-    private GUI window;
+    private final GUI window;
 
     /**
      * Creates a listener for the GUI window.
@@ -29,7 +29,7 @@ public class GUIListener extends KeyAdapter {
     public void keyTyped(KeyEvent event) {
         try {
             window.getGame().gas(true);
-            window.update();
+            window.update(true);
         } catch (HelicopterGame.CollisionException e) {
             System.out.println("Oh noes!");
         }

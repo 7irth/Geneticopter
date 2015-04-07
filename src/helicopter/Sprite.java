@@ -6,13 +6,13 @@ package helicopter;
 public abstract class Sprite {
 
     /** The sprite's symbol. */
-    protected char symbol;
+    final char symbol;
 
     /** The row location. */
-    protected int row;
+    int row;
 
     /** The column location. */
-    protected int column;
+    int column;
 
     /**
      * Initializes a sprite with the specified symbol and value
@@ -21,7 +21,7 @@ public abstract class Sprite {
      * @param row the row coordinate of the sprite
      * @param col the column coordinate of the sprite
      */
-    public Sprite(char symbol, int row, int col) {
+    Sprite(char symbol, int row, int col) {
         this.symbol = symbol;
         this.row = row;
         this.column = col;

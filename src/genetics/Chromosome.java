@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Chromosome {
 
-    private Random rando;
+    private final Random rando;
 
     private String dna;
     private int codonSize;
@@ -51,7 +51,7 @@ public class Chromosome {
                 if (c == '0') window.getGame().gas(false);
                 else window.getGame().gas(true);
 
-                window.update();
+                window.update(false);
                 fitness++;
 
             } catch (HelicopterGame.CollisionException e) {

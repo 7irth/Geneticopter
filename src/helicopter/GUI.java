@@ -6,16 +6,16 @@ import java.awt.*;
 public class GUI extends JFrame {
 
     // internal game constants
-    public static final int DELAY = 100;
+    private static final int DELAY = 100;
     public static final char COPTER = '^';
     public static final char WALL = '|';
     public static final char EMPTY = ' ';
     public static final char OBSTACLE = 'o';
 
-    private HelicopterGame game;
+    private final HelicopterGame game;
     private JLabel[][] tile;
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
 
     public GUI(HelicopterGame game) {
         this.game = game;
@@ -53,14 +53,17 @@ public class GUI extends JFrame {
         setResizable(false);
     }
 
-    public void update() throws HelicopterGame.CollisionException {
+    public void update(Boolean buttonPressed)
+            throws HelicopterGame.CollisionException {
         game.moveObstacles();
 
         if (Play.GUI) {
-            try {
-                Thread.sleep(GUI.DELAY);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if (!buttonPressed) {
+                try {
+                    Thread.sleep(GUI.DELAY);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             // redraw changed tiles

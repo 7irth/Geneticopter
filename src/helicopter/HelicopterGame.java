@@ -10,13 +10,13 @@ public class HelicopterGame {
     private HashSet<Obstacle> obstacles;
     private HashSet<Obstacle> initObstacles;
 
-    private int xSize;
-    private int ySize;
-    private int ceiling;
-    private int floor;
-    private int numberOfObstacles;
+    private final int xSize;
+    private final int ySize;
+    private final int ceiling;
+    private final int floor;
+    private final int numberOfObstacles;
 
-    private Random rando;
+    private final Random rando;
 
     private boolean crashed;
     private boolean gasLastTime;
@@ -35,7 +35,7 @@ public class HelicopterGame {
         initializeCave();
     }
 
-    public void initializeCave() {
+    private void initializeCave() {
         cave = new ArrayGrid<>(xSize, ySize);
 
         for (int row = 0; row < xSize; row++)
@@ -53,7 +53,7 @@ public class HelicopterGame {
         initializeObstacles();
     }
 
-    public void initializeObstacles() {
+    private void initializeObstacles() {
         if (!created) {
             obstacles = new HashSet<>();
 
@@ -66,15 +66,15 @@ public class HelicopterGame {
                 cave.setCell(o);
             } created = true;
             initObstacles = deepObstacleCopy(obstacles);
-            System.out.println(writeObstacleLocations());
         } else {
             obstacles = deepObstacleCopy(initObstacles);
         }
     }
 
-    public HashSet<Obstacle> deepObstacleCopy(HashSet<Obstacle> original) {
+    private HashSet<Obstacle> deepObstacleCopy(HashSet<Obstacle> original) {
         HashSet<Obstacle> copied = new HashSet<>();
 
+        //noinspection Convert2streamapi
         for (Obstacle o : original)
             copied.add(Obstacle.getObsInstance(o.getRow(), o.getColumn()));
 

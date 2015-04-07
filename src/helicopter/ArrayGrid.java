@@ -13,19 +13,19 @@ public class ArrayGrid<T> implements java.io.Serializable {
     /**
      * The number of rows in the array.
      */
-    private int numRows;
+    private final int numRows;
 
     /**
      * The number of columns in the array.
      */
-    private int numCols;
+    private final int numCols;
 
     /**
      * The elements in the grid.
      */
-    private T[][] elements;
+    private final T[][] elements;
 
-    protected ArrayList<Coordinates> changed;
+    final ArrayList<Coordinates> changed;
 
     public class Coordinates {
         public final int row;
