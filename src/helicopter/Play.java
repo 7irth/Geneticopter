@@ -8,15 +8,15 @@ public class Play {
     public static final int X_SIZE = 20;
     public static final int Y_SIZE = 150;
     public static final int OBSTACLES = 30;
-    public static final boolean GUI = true;
+    public static final boolean GUI = false;
 
     // population values
-    public static final int POP_SIZE = 100;
+    public static final int POP_SIZE = 10;
     public static final double CROSSOVER_RATE = 0.7;
     public static final double MUTATION_RATE = 0.001;
     public static final int CODON_SIZE = 1;
-    public static final int GENE_LENGTH = 5000;
-    public static final int GENERATIONS = 10;
+    public static final int GENE_LENGTH = 1000;
+    public static final int GENERATIONS = 5;
 
     public static void main(String[] args) {
 
@@ -24,8 +24,7 @@ public class Play {
         GUI gameUI = new GUI(new HelicopterGame());
 
         // start GUI
-         javax.swing.SwingUtilities.invokeLater(gameUI::launchGame);
-//        if (GUI) gameUI.launchGame(); // TODO: make threadsafe
+        if (GUI) javax.swing.SwingUtilities.invokeLater(gameUI::launchGame);
 
         // solve game
         Generate.gen(gameUI);

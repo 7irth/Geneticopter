@@ -36,7 +36,6 @@ public class HelicopterGame {
     }
 
     public void initializeCave() {
-        System.out.println("Init cave");
         cave = new ArrayGrid<>(xSize, ySize);
 
         for (int row = 0; row < xSize; row++)
@@ -55,9 +54,7 @@ public class HelicopterGame {
     }
 
     public void initializeObstacles() {
-        System.out.println("Init obs");
         if (!created) {
-            System.out.println("Making obs");
             obstacles = new HashSet<>();
 
             for (int i = 0; i < numberOfObstacles; i++) {
@@ -69,8 +66,8 @@ public class HelicopterGame {
                 cave.setCell(o);
             } created = true;
             initObstacles = deepObstacleCopy(obstacles);
+            System.out.println(writeObstacleLocations());
         } else {
-            System.out.println("Shifting obs back\n");
             obstacles = deepObstacleCopy(initObstacles);
         }
     }
@@ -164,7 +161,7 @@ public class HelicopterGame {
     public void gas(boolean applied) throws CollisionException {
         cave.clearCell(copter.getRow(), copter.getColumn());
 
-        // copter up when gas applied, down if not applied twice
+        // copter up 1 when gas applied, down 2 if not applied twice in a row
         if (applied) {
             copter.fly();
             gasLastTime = true;
@@ -174,14 +171,14 @@ public class HelicopterGame {
         }
 
         if (cave.getCell(copter.getRow(), copter.getColumn()) instanceof Wall
-                || cave.getCell(copter.getRow(), copter.getColumn()) instanceof Obstacle) {
-            System.out.println("Hit wall or obstacle");
+                || cave.getCell(copter.getRow(), copter.getColumn()) instanceof Obstacle)
             throw new CollisionException();
-        } else cave.setCell(copter);
+        else cave.setCell(copter);
     }
 
     public class CollisionException extends Exception {
         public CollisionException() {
+            initializeCave();
         }
     }
 }

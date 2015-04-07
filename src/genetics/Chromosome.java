@@ -2,7 +2,6 @@ package genetics;
 
 import helicopter.GUI;
 import helicopter.HelicopterGame;
-import helicopter.Play;
 
 import java.util.Random;
 
@@ -47,7 +46,7 @@ public class Chromosome {
     public Chromosome(String testDNA, GUI window) {
         rando = new Random();
         this.dna = testDNA;
-        testFitness(window);
+        System.out.println(testFitness(window));
     }
 
     public int testFitness(GUI window) {
@@ -57,16 +56,11 @@ public class Chromosome {
                 if (c == '0') window.getGame().gas(false);
                 else window.getGame().gas(true);
 
-                if (Play.GUI) {
-                    Thread.sleep(GUI.DELAY);
-                    window.GUIUpdate();
-                } else window.update();
-
+                window.update();
                 fitness++;
 
-            } catch (HelicopterGame.CollisionException | InterruptedException e) {
-                System.out.println("Collision in Chromo");
-                window.getGame().initializeCave();
+            } catch (HelicopterGame.CollisionException e) {
+                System.out.println(this);
                 break;
             }
         return fitness;
@@ -116,6 +110,6 @@ public class Chromosome {
 
     @Override
     public String toString() {
-        return String.format("%d: %s", fitness, dna);
+        return String.format("%d: %s", fitness, dna.substring(0, fitness));
     }
 }

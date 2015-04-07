@@ -29,11 +29,10 @@ public class GUIListener extends KeyAdapter {
     public void keyTyped(KeyEvent event) {
         try {
             window.getGame().gas(true);
+            window.update();
         } catch (HelicopterGame.CollisionException e) {
             System.out.println("Oh noes!");
-            window.getGame().initializeCave();
         }
-        window.GUIUpdate();
     }
 
     @Override

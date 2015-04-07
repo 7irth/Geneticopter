@@ -50,13 +50,11 @@ public class Population {
     }
 
     public void createPopulation() {
-        for (int i = 0; i < size; i++) {
-            Chromosome chromosome = new Chromosome(geneDimensions);
-            population.add(chromosome);
+        while (population.size() < size)
+            population.add(new Chromosome(geneDimensions));
 
-            if (game != null) testPopulationFitness();
-        }
-        sumPopulationFitness();
+        if (game != null) testPopulationFitness();
+//        sumPopulationFitness();
     }
 
     public void sumPopulationFitness() {
@@ -139,10 +137,14 @@ public class Population {
     }
 
     public void testPopulationFitness() {
-
         TreeMap<Integer, Chromosome> newFitPop = new TreeMap<>();
+        populationFitness = 0;
 
-        for (Chromosome c : population) newFitPop.put(c.testFitness(game), c);
+        for (Chromosome c : population) {
+            int cFitness = c.testFitness(game);
+            newFitPop.put(cFitness, c);
+            populationFitness += cFitness;
+        }
 
         fitPop = newFitPop;
     }
@@ -162,7 +164,9 @@ public class Population {
     @Override
     public String toString() {
         String s = "";
+        System.out.println("OLD TOTAL FITNESS: " + populationFitness);
         sumPopulationFitness();
+        System.out.println("NEW TOTAL FITNESS: " + populationFitness);
 
 //        for (Integer i : fitPop.keySet())
 //            s += i + "\r\n";
