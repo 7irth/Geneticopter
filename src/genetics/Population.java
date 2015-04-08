@@ -8,17 +8,18 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.TreeMap;
 
+@SuppressWarnings("unused")
 class Population {
 
     private GUI game;
-    private Random rando;
+    private final Random rando;
 
     private ArrayList<Chromosome> population;
     private TreeMap<Integer, ArrayList<Chromosome>> fitPop;
 
-    private int size;
-    private double crossoverRate;
-    private double[] geneDimensions;
+    private final int size;
+    private final double crossoverRate;
+    private final double[] geneDimensions;
     private int populationFitness;
 
     public Population(int size, double crossoverRate, double mutationRate,
@@ -75,7 +76,7 @@ class Population {
     }
 
     private Chromosome selectBest() {
-        return null;
+        return selectRandom();
     }
 
     private ChromoPair crossOver(Chromosome C1, Chromosome C2) {
@@ -111,7 +112,7 @@ class Population {
         ArrayList<Chromosome> newPop = new ArrayList<>(population.size());
 
         for (int i = 0; i < population.size() / 2; i++) {
-            Chromosome uno = selectWeighted();
+            Chromosome uno = getBest();
             Chromosome dos = selectWeighted();
 
             if (uno != dos) {
@@ -128,21 +129,20 @@ class Population {
 
         population = newPop;
         assessPopulationFitness();
-
-        System.out.println(this);
     }
 
     private void assessPopulationFitness() {
 //        TreeMultimap<Integer, Chromosome> test;
         TreeMap<Integer, ArrayList<Chromosome>> newFitPop =
                 new TreeMap<Integer, ArrayList<Chromosome>>() {
-            @Override
-            public String toString() {
-                String s = "";
-                for (Integer c : this.keySet())
-                    s += c + ": " + this.get(c) + '\n';
-                return s.trim();
-            }};
+                    @Override
+                    public String toString() {
+                        String s = "";
+                        for (Integer c : this.keySet())
+                            s += c + ": " + this.get(c) + '\n';
+                        return s.trim();
+                    }
+                };
 
         populationFitness = 0;
 
@@ -169,7 +169,8 @@ class Population {
     }
 
     public Chromosome getBest() {
-        return fitPop.lastEntry().getValue().get(0);
+        ArrayList<Chromosome> bestest = fitPop.lastEntry().getValue();
+        return bestest.get(rando.nextInt(bestest.size()));
     }
 
     @Override
@@ -178,6 +179,6 @@ class Population {
         //noinspection ConstantConditions
         return (Play.DEBUG ? '\n' + fitPop.toString() + '\n' : "") +
                 String.format("Population fitness: %d, average: %d",
-                populationFitness, populationFitness / size);
+                        populationFitness, populationFitness / size);
     }
 }

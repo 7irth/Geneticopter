@@ -7,7 +7,7 @@ import java.util.ArrayList;
  *
  * @param <T> the type of objects in the array
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "unused"})
 public class ArrayGrid<T> implements java.io.Serializable {
 
     /**

@@ -1,7 +1,7 @@
 package helicopter;
 
 public class Copter extends Sprite {
-    public Copter(int row, int col) {
+    public Copter(int row, @SuppressWarnings("SameParameterValue") int col) {
         super(GUI.COPTER, row, col);
     }
 

@@ -3,6 +3,7 @@ package helicopter;
 /**
  * An abstract class to represent all the sprites used in the game.
  */
+@SuppressWarnings("unused")
 public abstract class Sprite {
 
     /** The sprite's symbol. */

@@ -5,17 +5,18 @@ import helicopter.HelicopterGame;
 
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class Chromosome {
 
     private final Random rando;
 
     private String dna;
-    private int codonSize;
-    private int numberOfGenes;
-    private int chromoLength;
-    private double mutationRate;
+    private final int codonSize;
+    private final int numberOfGenes;
+    private final int chromoLength;
+    private final double mutationRate;
 
-    private int fitness = 0;
+    private int fitness;
 
     public Chromosome(double[] geneInfo, String dna) {
         rando = new Random();
@@ -29,6 +30,8 @@ public class Chromosome {
 
         if (dna.length() == 0) while (this.dna.length() < chromoLength)
             this.dna += rando.nextBoolean() ? "1" : "0";
+
+        fitness = 0;
     }
 
     // randomly generated dna
@@ -36,7 +39,12 @@ public class Chromosome {
         this(geneInfo, "");
     }
 
-    public static Chromosome testChromo(String testDNA, String testObs, GUI window) {
+    public Chromosome(Chromosome chromosome) {
+        this(chromosome.getGeneInfo(), chromosome.getStringDNA());
+    }
+
+    public static Chromosome testChromo(String testDNA, String testObs,
+                                        GUI window) {
         Chromosome c = new Chromosome(new double[]{0, 0, 0}, testDNA);
         window.getGame().readObstacleLocations(testObs);
         c.testFitness(window);
@@ -55,7 +63,6 @@ public class Chromosome {
                 fitness++;
 
             } catch (HelicopterGame.CollisionException e) {
-//                System.out.println(this);
                 break;
             }
         return fitness;
@@ -86,13 +93,12 @@ public class Chromosome {
         return chromoLength;
     }
 
-    // could give back 0 fitness if it hasn't been tested yet
-    public int getFitness() {
-        return fitness;
+    public double[] getGeneInfo() {
+        return new double[]{codonSize, numberOfGenes, mutationRate};
     }
 
-    public void upFitness() {
-        fitness++;
+    public int getFitness() {
+        return fitness;
     }
 
     public char[] getDNA() {

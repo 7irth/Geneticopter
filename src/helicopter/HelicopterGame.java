@@ -3,6 +3,7 @@ package helicopter;
 import java.util.HashSet;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class HelicopterGame {
 
     private ArrayGrid<Sprite> cave;
@@ -64,7 +65,8 @@ public class HelicopterGame {
 
                 obstacles.add(o);
                 cave.setCell(o);
-            } created = true;
+            }
+            created = true;
             initObstacles = deepObstacleCopy(obstacles);
         } else {
             obstacles = deepObstacleCopy(initObstacles);
