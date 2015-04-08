@@ -8,7 +8,7 @@ public class Play {
     public static final int X_SIZE = 20;
     public static final int Y_SIZE = 150;
     public static final int OBSTACLES = 30;
-    public static final boolean GUI = true;
+    public static final boolean GUI = false;
 
     // population values
     public static final int POP_SIZE = 100;
@@ -18,7 +18,7 @@ public class Play {
     public static final int GENE_LENGTH = 1000;
     public static final int GENERATIONS = 10;
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
     public static void main(String[] args) {
 

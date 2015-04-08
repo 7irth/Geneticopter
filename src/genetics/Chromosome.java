@@ -36,15 +36,15 @@ public class Chromosome {
         this(geneInfo, "");
     }
 
-    // for testing single chromosomes
-    public Chromosome(String testDNA, GUI window) {
-        rando = new Random();
-        this.dna = testDNA;
-        testFitness(window);
-        System.out.println(this);
+    public static Chromosome testChromo(String testDNA, String testObs, GUI window) {
+        Chromosome c = new Chromosome(new double[]{0, 0, 0}, testDNA);
+        window.getGame().readObstacleLocations(testObs);
+        c.testFitness(window);
+        return c;
     }
 
     public int testFitness(GUI window) {
+        fitness = 0;
 
         for (char c : dna.toCharArray())
             try {

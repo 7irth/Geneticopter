@@ -47,13 +47,6 @@ class Population {
         this.game = game;
     }
 
-    // for testing one
-    public Population(String testDNA, String testObs, GUI game) {
-        this.game = game;
-        game.getGame().readObstacleLocations(testObs);
-        new Chromosome(testDNA, game);
-    }
-
     private void createPopulation() {
         while (population.size() < size)
             population.add(new Chromosome(geneDimensions));
@@ -79,6 +72,10 @@ class Population {
                     .get(rando.nextInt(fitPop.get(i).size()));
         }
         return selectRandom();
+    }
+
+    private Chromosome selectBest() {
+        return null;
     }
 
     private ChromoPair crossOver(Chromosome C1, Chromosome C2) {
@@ -133,10 +130,10 @@ class Population {
         assessPopulationFitness();
 
         System.out.println(this);
-//        System.out.println(fitPop);
     }
 
     private void assessPopulationFitness() {
+//        TreeMultimap<Integer, Chromosome> test;
         TreeMap<Integer, ArrayList<Chromosome>> newFitPop =
                 new TreeMap<Integer, ArrayList<Chromosome>>() {
             @Override
