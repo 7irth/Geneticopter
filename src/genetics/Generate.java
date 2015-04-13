@@ -13,14 +13,14 @@ public class Generate {
         Chromosome bestChromo = popPop.getBest();
 
         for (int i = 0; i < Play.GENERATIONS; i++) {
-//            System.out.println("Gen " + i + " " + popPop);
+            System.out.println("Gen " + i + " " + popPop);
 
-            Chromosome bestThisTime = popPop.getBest();
-            if (bestThisTime.getFitness() > bestChromo.getFitness()) {
-                System.out.println("New best at gen " + i + ": " + bestThisTime.getFitness());
-                bestChromo = new Chromosome(bestThisTime);
-                bestChromo.testFitness(game);
-            }
+//            Chromosome bestThisTime = popPop.getBest();
+//            if (bestThisTime.getFitness() > bestChromo.getFitness()) {
+//                System.out.println("New best at gen " + i + ": " + bestThisTime.getFitness());
+//                bestChromo = new Chromosome(bestThisTime);
+//                bestChromo.testFitness(game);
+//            }
 
             popPop.nextGeneration();
         }

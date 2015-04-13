@@ -76,7 +76,7 @@ class Population {
     }
 
     private Chromosome selectBest() {
-        return selectRandom();
+        return getBest().mutateEnd(10);
     }
 
     private ChromoPair crossOver(Chromosome C1, Chromosome C2) {
@@ -112,8 +112,8 @@ class Population {
         ArrayList<Chromosome> newPop = new ArrayList<>(population.size());
 
         for (int i = 0; i < population.size() / 2; i++) {
-            Chromosome uno = getBest();
-            Chromosome dos = selectWeighted();
+            Chromosome uno = selectBest();
+            Chromosome dos = selectBest();
 
             if (uno != dos) {
                 ChromoPair newChromos = crossOver(uno.mutate(), dos.mutate());

@@ -39,6 +39,7 @@ public class Chromosome {
         this(geneInfo, "");
     }
 
+    // copy chromosome
     public Chromosome(Chromosome chromosome) {
         this(chromosome.getGeneInfo(), chromosome.getStringDNA());
     }
@@ -78,6 +79,17 @@ public class Chromosome {
         dna = newDNA;
         fitness = 0;
 
+        return this;
+    }
+
+    public Chromosome mutateEnd(int mutateLength) {
+        System.out.println("Starting " + dna);
+        dna = dna.substring(0, dna.length() - mutateLength);
+
+        while (dna.length() < chromoLength)
+            this.dna += rando.nextBoolean() ? "1" : "0";
+
+        System.out.println("Now      " + dna);
         return this;
     }
 
