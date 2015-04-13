@@ -83,13 +83,13 @@ public class Chromosome {
     }
 
     public Chromosome mutateEnd(int mutateLength) {
-        System.out.println("Starting " + dna);
+//        System.out.println("Start " + dna);
         dna = dna.substring(0, dna.length() - mutateLength);
 
         while (dna.length() < chromoLength)
             this.dna += rando.nextBoolean() ? "1" : "0";
 
-        System.out.println("Now      " + dna);
+//        System.out.println("Now   " + dna);
         return this;
     }
 

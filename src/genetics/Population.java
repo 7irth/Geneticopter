@@ -68,15 +68,62 @@ class Population {
         int current = 0;
 
         for (Integer i : fitPop.keySet()) {
-            current += i;
-            if (current > pick) return fitPop.get(i)
-                    .get(rando.nextInt(fitPop.get(i).size()));
+            ArrayList<Chromosome> fitList = fitPop.get(i);
+            current += i * fitList.size();
+            if (current > pick)
+                return new Chromosome(fitList.get(rando.nextInt(fitList.size())));
         }
         return selectRandom();
     }
 
+    private void eugenicize(double percentile) {
+        // remove bottom 95%, fill with copies of top 5%, then generate
+//        for (int i = 0; i < population.size() * percentile; i++) {
+//            print(i);
+//            print(fitPop.descendingKeySet().pollFirst());
+//        }
+
+//        int i = 0;
+//        while (i < population.size() * percentile) {
+//            print(i);
+//            Integer here = fitPop.descendingKeySet().descendingIterator();
+//            for (Chromosome c : fitPop.get())
+//        }
+//        print("POP", population.size());
+        int keep = (int) (population.size() * percentile);
+//        print("KEEP", keep);
+
+        ArrayList<Chromosome> newPop = new ArrayList<>(population.size());
+        int i = 0;
+        for (Integer thing : fitPop.descendingKeySet()) {
+            for (Chromosome c : fitPop.get(thing)) {
+                for (int j = 0; j < 1 / percentile; j++) {
+//                    print(j);
+                    newPop.add(c);
+//                    print(c);
+                }
+                i++;
+//                print("THING", i, keep);
+                if (i == keep) break;
+            }  // uggo loop guards
+            if (i == keep) break;
+        }
+        print("NEW", newPop);
+        population = newPop;
+        assessPopulationFitness();
+        print("FIT", fitPop);
+    }
+
     private Chromosome selectBest() {
-        return getBest().mutateEnd(10);
+        Chromosome selected = popBest();
+//        print("selected", selected);
+        return selected.mutateEnd(10);
+    }
+
+    // pythonify printing
+    public void print(Object... args) {
+        for (Object arg : args) System.out.print(String.valueOf(arg) + " ");
+        System.out.println();
     }
 
     private ChromoPair crossOver(Chromosome C1, Chromosome C2) {
@@ -110,10 +157,10 @@ class Population {
 
     public void nextGeneration() {
         ArrayList<Chromosome> newPop = new ArrayList<>(population.size());
-
+        eugenicize(0.1);
         for (int i = 0; i < population.size() / 2; i++) {
-            Chromosome uno = selectBest();
-            Chromosome dos = selectBest();
+            Chromosome uno = selectWeighted();
+            Chromosome dos = selectWeighted();
 
             if (uno != dos) {
                 ChromoPair newChromos = crossOver(uno.mutate(), dos.mutate());
@@ -124,11 +171,15 @@ class Population {
         }
 
         // bring population back up
-        while (newPop.size() < population.size())
+        while (newPop.size() < population.size()) {
+            print("adding noob");
             newPop.add(new Chromosome(geneDimensions));
+        }
 
         population = newPop;
         assessPopulationFitness();
+
+        print("NEXT", newPop);
     }
 
     private void assessPopulationFitness() {
@@ -139,7 +190,8 @@ class Population {
                     public String toString() {
                         String s = "";
                         for (Integer c : this.keySet())
-                            s += c + ": " + this.get(c) + '\n';
+                            s += String.format("%d: %s %d\n",
+                                    c, this.get(c), this.get(c).size());
                         return s.trim();
                     }
                 };
@@ -171,6 +223,20 @@ class Population {
     public Chromosome getBest() {
         ArrayList<Chromosome> bestest = fitPop.lastEntry().getValue();
         return bestest.get(rando.nextInt(bestest.size()));
+    }
+
+    public Chromosome popBest() {
+        ArrayList<Chromosome> bestest = fitPop.lastEntry().getValue();
+
+        if (bestest.size() == 0) {
+            fitPop.pollLastEntry();
+            bestest = fitPop.lastEntry().getValue();
+        }
+
+        Chromosome randoBest = bestest.get(rando.nextInt(bestest.size()));
+        bestest.remove(randoBest);
+
+        return randoBest;
     }
 
     @Override
