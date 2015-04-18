@@ -53,21 +53,18 @@ public class GUI extends JFrame {
         setResizable(false);
     }
 
-    public void update(Boolean buttonPressed)
-            throws HelicopterGame.CollisionException {
+    public void update(Boolean buttonPressed) throws HelicopterGame.CollisionException {
         game.moveObstacles();
 
         if (Play.GUI) {
-            if (!buttonPressed) {
-                try {
-                    Thread.sleep(GUI.DELAY);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            if (!buttonPressed) try {
+                Thread.sleep(GUI.DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
             // redraw changed tiles
-            for (ArrayGrid.Coordinates c : game.getCave().changed)
+            for (ArrayGrid.Coordinates c : game.getCave().getChanged())
                 tile[c.row][c.col].setText(game.get(c.row, c.col).toString());
 
             game.getCave().clearChanged();

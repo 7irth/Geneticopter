@@ -11,8 +11,8 @@ public class HelicopterGame {
     private HashSet<Obstacle> obstacles;
     private HashSet<Obstacle> initObstacles;
 
-    private final int xSize;
-    private final int ySize;
+    private final int rows;
+    private final int cols;
     private final int ceiling;
     private final int floor;
     private final int numberOfObstacles;
@@ -24,29 +24,29 @@ public class HelicopterGame {
     private boolean created;
 
     public HelicopterGame() {
-        this.xSize = Play.X_SIZE;
-        this.ySize = Play.Y_SIZE;
+        this.rows = Play.ROWS;
+        this.cols = Play.COLUMNS;
         numberOfObstacles = Play.OBSTACLES;
 
         rando = new Random();
 
-        ceiling = xSize / 6;  // ceiling & floor start at 1/6th of cave size
-        floor = xSize - ceiling - 1;
+        ceiling = rows / 6;  // ceiling & floor start at 1/6th of cave size
+        floor = rows - ceiling - 1;
 
         initializeCave();
     }
 
     private void initializeCave() {
-        cave = new ArrayGrid<>(xSize, ySize);
+        cave = new ArrayGrid<>(rows, cols);
 
-        for (int row = 0; row < xSize; row++)
-            for (int col = 0; col < ySize; col++)
+        for (int row = 0; row < rows; row++)
+            for (int col = 0; col < cols; col++)
                 if (row < ceiling || row > floor)
                     cave.setCell(new Wall(row, col));
                 else
                     cave.setCell(new EmptySpace(row, col));
 
-        copter = new Copter(xSize / 2, 42);  // copter starting position
+        copter = new Copter(rows / 2, 42);  // copter starting position
         gasLastTime = false;
         crashed = false;
         cave.setCell(copter);
@@ -61,7 +61,7 @@ public class HelicopterGame {
             for (int i = 0; i < numberOfObstacles; i++) {
                 Obstacle o = new Obstacle(
                         rando.nextInt(floor - ceiling) + ceiling,
-                        rando.nextInt(ySize));
+                        rando.nextInt(cols));
 
                 obstacles.add(o);
                 cave.setCell(o);
@@ -87,7 +87,7 @@ public class HelicopterGame {
         for (Obstacle o : obstacles) {
             cave.clearCell(o.getRow(), o.getColumn());
 
-            if (o.getColumn() == 0) o.transport(o.getRow(), ySize - 1);
+            if (o.getColumn() == 0) o.transport(o.getRow(), cols - 1);
             else o.moveAlong();
 
             if (cave.getCell(o.getRow(), o.getColumn()) instanceof Copter)
@@ -99,10 +99,10 @@ public class HelicopterGame {
     public void readObstacleLocations(String locations) {
         obstacles = new HashSet<>();
 
-        for (String coords : locations.split("o")) {
+        for (String coords : locations.split(String.valueOf(GUI.OBSTACLE))) {
             String[] coord = coords.split(",");
             Obstacle o = new Obstacle(Integer.parseInt(coord[0]),
-                    Integer.parseInt(coord[1]));
+                                      Integer.parseInt(coord[1]));
 
             obstacles.add(o);
             cave.setCell(o);
@@ -133,7 +133,7 @@ public class HelicopterGame {
      * @return the number of rows in the cave
      */
     public int getNumRows() {
-        return xSize;
+        return rows;
     }
 
     /**
@@ -142,7 +142,7 @@ public class HelicopterGame {
      * @return the number of columns in the cave
      */
     public int getNumCols() {
-        return ySize;
+        return cols;
     }
 
     public boolean isCrashed() {

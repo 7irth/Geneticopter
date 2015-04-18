@@ -25,7 +25,7 @@ public class ArrayGrid<T> implements java.io.Serializable {
      */
     private final T[][] elements;
 
-    final ArrayList<Coordinates> changed;
+    private ArrayList<Coordinates> changed;
 
     public class Coordinates {
         public final int row;
@@ -73,6 +73,10 @@ public class ArrayGrid<T> implements java.io.Serializable {
 
     public void clearChanged() {
         changed.clear();
+    }
+
+    public ArrayList<Coordinates> getChanged() {
+        return changed;
     }
 
     /**
