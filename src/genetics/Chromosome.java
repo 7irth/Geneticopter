@@ -42,6 +42,7 @@ public class Chromosome {
     // copy chromosome
     public Chromosome(Chromosome chromosome) {
         this(chromosome.getGeneInfo(), chromosome.getStringDNA());
+        this.setFitness(chromosome.getFitness());
     }
 
     public static Chromosome testChromo(String testDNA, String testObs,
@@ -111,6 +112,10 @@ public class Chromosome {
 
     public int getFitness() {
         return fitness;
+    }
+
+    void setFitness(int fitness) {
+        this.fitness = fitness;
     }
 
     public char[] getDNA() {

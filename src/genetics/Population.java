@@ -108,10 +108,10 @@ class Population {
             }  // uggo loop guards
             if (i == keep) break;
         }
-        print("NEW", newPop);
+//        print("NEW", newPop);
         population = newPop;
         assessPopulationFitness();
-        print("FIT", fitPop);
+//        print("FIT", fitPop);
     }
 
     private Chromosome selectBest() {
@@ -179,7 +179,7 @@ class Population {
         population = newPop;
         assessPopulationFitness();
 
-        print("NEXT", newPop);
+//        print("NEXT", newPop);
     }
 
     private void assessPopulationFitness() {
