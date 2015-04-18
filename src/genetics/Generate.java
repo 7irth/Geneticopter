@@ -7,10 +7,7 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Generate {
-
-    static String infoPath = "C:\\Users\\Tirth\\Programming\\Geneticopter\\game.txt";
-
-    public static void gen(GUI game) {
+    public static void genPop(GUI game) {
         Population popPop = new Population(Play.POP_SIZE, Play.CROSSOVER_RATE,
                 Play.MUTATION_RATE, Play.CODON_SIZE, Play.GENE_LENGTH, game);
 
@@ -24,14 +21,38 @@ public class Generate {
             if (bestThisTime.getFitness() > bestChromo.getFitness()) {
                 print("NEW BEST AT GEN", i + ":", bestThisTime.getFitness());
                 bestChromo = new Chromosome(bestThisTime);
-                saveGame(infoPath, gameObs, bestChromo.getStringDNA());
+                saveGame(gameObs, bestChromo);
             }
 
             popPop.nextGeneration();
         }
 
         // test chromosome from file
-        testChromo(infoPath, game);
+        testChromo(game);
+    }
+
+    public static void genOne(GUI game, int mutationLength) {
+        Chromosome chosenOne = new Chromosome(
+                new double[]{Play.CODON_SIZE, Play.GENE_LENGTH, Play.MUTATION_RATE});
+        Chromosome bestChromo = new Chromosome(chosenOne);
+        int bestFitness = 0;
+
+        for (int i = 0; i < Play.GENERATIONS; i++) {
+            chosenOne.testFitness(game);
+
+            if (chosenOne.getFitness() > bestFitness) {
+                bestFitness = chosenOne.getFitness();
+                print(chosenOne.getFitness());
+                bestChromo = new Chromosome(chosenOne);
+            }
+
+            chosenOne.mutateEnd(mutationLength);
+        }
+
+        saveGame(game.getGame().writeObstacleLocations(), bestChromo);
+
+        // test chromosome from file
+        testChromo(game);
     }
 
     // pythonify printing
@@ -40,10 +61,11 @@ public class Generate {
         System.out.println();
     }
 
-    public static void saveGame(String infoPath, String obs, String chromo) {
+    public static void saveGame(String obs, Chromosome chromo) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(infoPath));
-            writer.write(obs + '\n' + chromo);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(Play.SAVE_GAME));
+            writer.write(obs + '\n' +
+                    chromo.getStringDNA().substring(0, chromo.getFitness()));
             writer.flush();
             writer.close();
         } catch (IOException e) {
@@ -51,11 +73,11 @@ public class Generate {
         }
     }
 
-    public static void testChromo(String infoPath, GUI game) {
+    public static void testChromo(GUI game) {
         String testObs = "";
         String testChromo = "";
         try {
-            Scanner scanner = new Scanner(new FileInputStream(infoPath));
+            Scanner scanner = new Scanner(new FileInputStream(Play.SAVE_GAME));
             testObs = scanner.nextLine();
             testChromo = scanner.nextLine();
         } catch (FileNotFoundException e) {

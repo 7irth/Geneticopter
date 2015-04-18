@@ -18,6 +18,7 @@ public class Chromosome {
 
     private int fitness;
 
+    // geneInfo: codonSize, numberOfGenes, mutationRate
     public Chromosome(double[] geneInfo, String dna) {
         rando = new Random();
 
@@ -62,9 +63,11 @@ public class Chromosome {
                 else window.getGame().gas(true);
 
                 window.update(false);
+                window.updateDistance(false);
                 fitness++;
 
             } catch (HelicopterGame.CollisionException e) {
+                window.updateDistance(true);
                 break;
             }
         return fitness;
@@ -84,13 +87,11 @@ public class Chromosome {
     }
 
     public Chromosome mutateEnd(int mutateLength) {
-//        System.out.println("Start " + dna);
-        dna = dna.substring(0, dna.length() - mutateLength);
+        dna = dna.substring(0, fitness - mutateLength);
 
         while (dna.length() < chromoLength)
             this.dna += rando.nextBoolean() ? "1" : "0";
 
-//        System.out.println("Now   " + dna);
         return this;
     }
 
