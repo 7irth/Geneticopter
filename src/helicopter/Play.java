@@ -9,9 +9,9 @@ public class Play {
             "C:\\Users\\Tirth\\Programming\\Geneticopter\\game.txt";
 
     // cave values
-    public static final int ROWS = 20;
+    public static final int ROWS = 10;
     public static final int COLUMNS = 150;
-    public static final int OBSTACLES = 70;
+    public static final int OBSTACLES = 100;
     public static boolean GUI = true;
 
     // population values

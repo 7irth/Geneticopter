@@ -102,7 +102,7 @@ public class HelicopterGame {
         for (String coords : locations.split(String.valueOf(GUI.OBSTACLE))) {
             String[] coord = coords.split(",");
             Obstacle o = new Obstacle(Integer.parseInt(coord[0]),
-                                      Integer.parseInt(coord[1]));
+                    Integer.parseInt(coord[1]));
 
             obstacles.add(o);
             cave.setCell(o);
@@ -172,7 +172,8 @@ public class HelicopterGame {
             gasLastTime = false;
         }
 
-        if (cave.getCell(copter.getRow(), copter.getColumn()) instanceof Wall
+        if (copter.getRow() >= rows
+                || cave.getCell(copter.getRow(), copter.getColumn()) instanceof Wall
                 || cave.getCell(copter.getRow(), copter.getColumn()) instanceof Obstacle)
             throw new CollisionException();
         else cave.setCell(copter);

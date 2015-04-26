@@ -87,7 +87,7 @@ public class Chromosome {
     }
 
     public Chromosome mutateEnd(int mutateLength) {
-        dna = dna.substring(0, fitness - mutateLength);
+        dna = (mutateLength < fitness) ? dna.substring(0, fitness - mutateLength) : "";
 
         while (dna.length() < chromoLength)
             this.dna += rando.nextBoolean() ? "1" : "0";
